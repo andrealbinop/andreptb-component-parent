@@ -10,13 +10,16 @@
 	<url>https://github.com/andreptb/andreptb-component-parent</url>
 
 	<properties>
-		<project.sourceConfigDirectory>${project.build.directory}/config</project.sourceConfigDirectory>
+		<maven.repo>${env.M2_REPO}/repository</maven.repo>
+		<parent.pom.version>1.0.0</parent.pom.version>
+		<parent.pom.artifactId>andreptb-component-parent</parent.pom.artifactId>
+		<sourceConfigDirectory>${basedir}/src/config</sourceConfigDirectory>
+		<configDependencyBasePath>${maven.repo}/com/github/andreptb/${parent.pom.artifactId}/${parent.pom.version}/${parent.pom.artifactId}-${parent.pom.version}</configDependencyBasePath>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<jacoco.version>0.7.5.201505241946</jacoco.version>
-		<component.parent.scm>scm:git:git@github.com:andreptb/andreptb-component-parent.git</component.parent.scm>
 	</properties>
 
 	<developers>
@@ -35,8 +38,8 @@
 	</licenses>
 
 	<scm>
-		<connection>${component.parent.scm}</connection>
-		<developerConnection>${component.parent.scm}</developerConnection>
+		<connection>scm:git:git@github.com:andreptb/andreptb-component-parent.git</connection>
+		<developerConnection>scm:git:git@github.com:andreptb/andreptb-component-parent.git</developerConnection>
 		<url>https://github.com/andreptb/andreptb-component-parent</url>
 	</scm>
 
@@ -48,60 +51,73 @@
 		</snapshotRepository>
 	</distributionManagement>
 
+	<profiles>
+		<!-- profile enabled only for this parent pom, so config files can be referenced -->
+		<profile>
+			<id>uploadConfigFiles</id>
+			<activation>
+				<file>
+					<exists>${sourceConfigDirectory}</exists>
+				</file>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>1.9.1</version>
+						<executions>
+							<execution>
+								<id>attach-artifacts</id>
+								<phase>package</phase>
+								<goals>
+									<goal>attach-artifact</goal>
+								</goals>
+								<configuration>
+									<artifacts>
+										<artifact>
+											<file>${sourceConfigDirectory}/ci/maven-settings.xml</file>
+											<type>xml</type>
+											<classifier>mvn-settings</classifier>
+										</artifact>
+										<artifact>
+											<file>${sourceConfigDirectory}/eclipse/java-formatter.xml</file>
+											<type>xml</type>
+											<classifier>java-formatter</classifier>
+										</artifact>
+										<artifact>
+											<file>${sourceConfigDirectory}/eclipse/javascript-formatter.xml</file>
+											<type>xml</type>
+											<classifier>javascript-formatter</classifier>
+										</artifact>
+										<artifact>
+											<file>${sourceConfigDirectory}/rules/checkstyle.xml</file>
+											<type>xml</type>
+											<classifier>checkstyle</classifier>
+										</artifact>
+										<artifact>
+											<file>${sourceConfigDirectory}/rules/findbugs.xml</file>
+											<type>xml</type>
+											<classifier>findbugs</classifier>
+										</artifact>
+										<artifact>
+											<file>${sourceConfigDirectory}/rules/pmd.xml</file>
+											<type>xml</type>
+											<classifier>pmd</classifier>
+										</artifact>
+									</artifacts>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-scm-plugin</artifactId>
-				<version>1.9.4</version>
-				<executions>
-					<execution>
-						<id>checkout-config-files</id>
-						<goals>
-							<goal>checkout</goal>
-						</goals>
-						<phase>initialize</phase>
-						<configuration>
-							<connectionUrl>${component.parent.scm}</connectionUrl>
-							<checkoutDirectory>${project.build.directory}</checkoutDirectory>
-							<includes>
-								<include>src/config</include>
-							</includes>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>com.marvinformatics.formatter</groupId>
-				<artifactId>formatter-maven-plugin</artifactId>
-				<version>1.6.0.RC4</version>
-				<executions>
-					<execution>
-						<id>format-code</id>
-						<goals>
-							<goal>format</goal>
-						</goals>
-						<configuration>
-							<configFile>${project.sourceConfigDirectory}/eclipse/java-formatter.xml</configFile>
-							<configjsfile>${project.sourceConfigDirectory}/eclipse/javascript-formatter.xml</configjsfile>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.version}</version>
-				<executions>
-					<execution>
-						<id>prepare-agent</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-						<phase>process-test-sources</phase>
-					</execution>
-				</executions>
-			</plugin>
+			<!-- plugins registered by default -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -172,56 +188,133 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<!-- optional plugins -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.marvinformatics.formatter</groupId>
+					<artifactId>formatter-maven-plugin</artifactId>
+					<version>1.6.0.RC4</version>
+					<executions>
+						<execution>
+							<id>format-code</id>
+							<goals>
+								<goal>format</goal>
+							</goals>
+							<configuration>
+								<configFile>${configDependencyBasePath}-java-formatter.xml</configFile>
+								<configJsFile>${configDependencyBasePath}-javascript-formatter.xml</configJsFile>
+							</configuration>
+						</execution>
+					</executions>
+					<dependencies>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.22</version>
+						</dependency>
+						<dependency>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${parent.pom.artifactId}</artifactId>
+							<version>${parent.pom.version}</version>
+							<classifier>java-formatter</classifier>
+							<type>xml</type>
+						</dependency>
+						<dependency>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${parent.pom.artifactId}</artifactId>
+							<version>${parent.pom.version}</version>
+							<classifier>javascript-formatter</classifier>
+							<type>xml</type>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco.version}</version>
+					<executions>
+						<execution>
+							<id>prepare-agent</id>
+							<goals>
+								<goal>prepare-agent</goal>
+							</goals>
+							<phase>process-test-sources</phase>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>findbugs-maven-plugin</artifactId>
+					<version>3.0.1</version>
+					<configuration>
+						<includeFilterFile>${configDependencyBasePath}-findbugs.xml</includeFilterFile>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${parent.pom.artifactId}</artifactId>
+							<version>${parent.pom.version}</version>
+							<classifier>findbugs</classifier>
+							<type>xml</type>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.16</version>
+					<configuration>
+						<configLocation>${configDependencyBasePath}-checkstyle.xml</configLocation>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${parent.pom.artifactId}</artifactId>
+							<version>${parent.pom.version}</version>
+							<classifier>checkstyle</classifier>
+							<type>xml</type>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-pmd-plugin</artifactId>
+					<version>3.5</version>
+					<configuration>
+						<rulesets>
+							<ruleset>${configDependencyBasePath}-pmd.xml</ruleset>
+						</rulesets>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${parent.pom.artifactId}</artifactId>
+							<version>${parent.pom.version}</version>
+							<classifier>pmd</classifier>
+							<type>xml</type>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>jdepend-maven-plugin</artifactId>
+					<version>2.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-report-plugin</artifactId>
+					<version>2.18.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
-
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>3.0.1</version>
-				<configuration>
-					<includeFilterFile>${project.sourceConfigDirectory}/rules/findbugs.xml</includeFilterFile>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.16</version>
-				<configuration>
-					<configLocation>${project.sourceConfigDirectory}/rules/checkstyle.xml</configLocation>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.15</version>
-				<configuration>
-					<rulesets>
-						<ruleset>${project.sourceConfigDirectory}/rules/pmd.xml</ruleset>
-					</rulesets>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jdepend-maven-plugin</artifactId>
-				<version>2.0</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.3</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>2.18.1</version>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.version}</version>
-			</plugin>
-		</plugins>
-	</reporting>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+			<version>4.12</version>
+		</dependency>
+	</dependencies>
 </project>
