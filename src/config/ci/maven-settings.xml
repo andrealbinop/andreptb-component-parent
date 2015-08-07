@@ -16,6 +16,9 @@
   		</activation>
   		<properties>
   			<skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+  			<maven.site.skip>true</maven.site.skip>
+  			<github.site.skip>true</github.site.skip>
+  			<gpg.skip>true</gpg.skip>
   		</properties>
   	</profile>
   </profiles>
