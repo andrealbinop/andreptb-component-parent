@@ -5,6 +5,6 @@ env:
     secure: TKfgV1O/8yQC4qNYOOFjVN25KtDsiYk2wHTSQnjgjxZgeYOXlttiD6JuVFrw/yYNyBaUXdP/Zt8E6iSn+KTD5sFaSxxM7fGFLsv801dbDYAjiuNpRqg+DAKBWKYM2mXtTgM381hjmo7V0SkrF1nvfdlqslKUn7OMLaX7M6UMjgu1loni7nZf/Qxpt8LtNpt/II65632Q6cDYU+zI497RVBdE0BvbeIvs4pP2jdlc1GuSerdNThh1Onda4tS1iYY2r8Y8h9wYTzRL3px6g5lg2d5ytkBhKLTluL6IwBnMmgHR/n+eywCEptSLXjXzmb4OPvGHsi/KVeff5DWSvZI0UInlu/zIEBKQQYitDhD+j/wqUrHElDRlcpYRpMq7+MUA5JZ0iXksAB5mzlyTeX9n9Cf+MfZ4TAijNx4Lr/V0IFuMunzuB6f1SxhBKUQnZ0YbS8P8NqnpC5yaSvFc/TpuG3mhSoGBf6YV4YAIehSLq3sDg61IfAXuxdILjFJ+VWevXfdgU45GX8AuCn8ljRyJ7WOWBjwRbuA7autmOLTZsZ0wnZMUhyMWc3USmSBYSP0l8bfWrrNCCruuECkMaBX7G3O64vi7TesZTXWKm0gv9uzwUoJUiy6JeI/o/LgSuRiQubvUE5a56eu4TLgmt3gQBaI246RJil2xRGJ8/NDIG88=
 
 script:
-- openssl aes-256-cbc -K $encrypted_75fbbe5cc720_key -iv $encrypted_75fbbe5cc720_iv -in private.key.enc -out src/deploy/private.key -d
+- openssl aes-256-cbc -K $encrypted_75fbbe5cc720_key -iv $encrypted_75fbbe5cc720_iv -in src/deploy/private.key.enc -out src/deploy/private.key -d
 - gpg --import src/deploy/private.key && gpg --import src/deploy/public.key
 - mvn -s src/config/mvn-settings.xml deploy -DskipTests -Dmaven.install.skip -DstagingDescription=$TRAVIS_COMMIT -Dgithub.global.userName=andreptb -Dgithub.global.oauth2Token=$GH_TOKEN
