@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.andreptb</groupId>
 	<artifactId>andreptb-component-parent</artifactId>
-	<version>0.2.0</version>
+	<version>0.2.1</version>
 	<packaging>pom</packaging>
 	<name>andreptb-component-parent</name>
 	<description>Parent POM designed to provide common configuration for Maven component projects available on Maven Central</description>
@@ -212,29 +212,6 @@
 						</executions>
 					</plugin>
 					<plugin>
-						<groupId>com.github.github</groupId>
-						<artifactId>site-maven-plugin</artifactId>
-						<version>0.12</version>
-						<configuration>
-							<message>Creating site for ${project.version}</message>
-						</configuration>
-						<executions>
-							<execution>
-								<goals>
-									<goal>site</goal>
-								</goals>
-								<phase>site-deploy</phase>
-							</execution>
-						</executions>
-						<dependencies>
-							<dependency>
-								<groupId>org.eclipse.mylyn.github</groupId>
-								<artifactId>org.eclipse.egit.github.core</artifactId>
-								<version>2.1.5</version>
-							</dependency>
-						</dependencies>
-					</plugin>
-					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>findbugs-maven-plugin</artifactId>
 						<version>3.0.1</version>
@@ -287,6 +264,22 @@
 							</dependency>
 						</dependencies>
 					</plugin>
+						<plugin>
+							<groupId>com.github.github</groupId>
+							<artifactId>site-maven-plugin</artifactId>
+							<version>0.12</version>
+							<executions>
+								<execution>
+									<goals>
+										<goal>site</goal>
+									</goals>
+									<phase>site-deploy</phase>
+									<configuration>
+										<message>Creating site for ${project.version}</message>
+									</configuration>
+								</execution>
+							</executions>
+						</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-site-plugin</artifactId>
