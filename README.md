@@ -12,3 +12,4 @@ andreptb-component-parent [![Maven Central](https://maven-badges.herokuapp.com/m
 | [maven-javadoc-plugin](https://maven.apache.org/plugins/maven-javadoc-plugin) | package | Generates project's javadoc artifact. |
 | [maven-gpg-plugin](https://maven.apache.org/plugins/maven-gpg-plugin) | package | Generates project's gpg artifacts. |
 | [nexus-staging-maven-plugin](https://github.com/sonatype/nexus-maven-plugins/tree/master/staging/maven-plugin) | deploy | Deploys generated artifacts to maven central. |
+| [github-site-plugin](https://github.com/github/maven-plugins/tree/master/github-site-plugin) | site-deploy | Deploys generated maven site to github gh-pages branch. |
