@@ -7,6 +7,10 @@
 			<username>${env.OSSRH_USERNAME}</username>
 			<password>${env.OSSRH_PASSWORD}</password>
 		</server>
+		<server>
+			<id>github</id>
+			<password>${env.GH_TOKEN}</password>
+			</server>
 	</servers>
 	<mirrors>
 		<mirror>
@@ -29,6 +33,7 @@
 				<maven.site.skip>true</maven.site.skip>
 				<github.site.skip>true</github.site.skip>
 				<gpg.skip>true</gpg.skip>
+				<coveralls.skip>true</coveralls.skip>
 			</properties>
 		</profile>
 	</profiles>
