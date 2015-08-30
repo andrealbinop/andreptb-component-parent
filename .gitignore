@@ -9,4 +9,5 @@ bin
 rebel.xml
 target
 *.log
-private.key
+src/deploy/private.key
+src/deploy/.creds

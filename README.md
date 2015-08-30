@@ -1,4 +1,5 @@
-andreptb-component-parent [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.andreptb/andreptb-component-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.andreptb/andreptb-component-parent/)
+andreptb-component-parent [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.andreptb/andreptb-component-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.andreptb/andreptb-component-parent/) [![Build Status](https://travis-ci.org/andreptb/andreptb-component-parent.svg?branch=master)](https://travis-ci.org/andreptb/andreptb-component-parent)
+
 ==============
 
 [Maven Parent POM](https://maven.apache.org/guides/introduction/introduction-to-the-pom.html) designed to provide common tasks for projects available on [Maven Central](http://search.maven.org/). These tasks are implemented by various plugins registered and configured on this parent POM, as detailed below:
@@ -12,4 +13,5 @@ andreptb-component-parent [![Maven Central](https://maven-badges.herokuapp.com/m
 | [maven-javadoc-plugin](https://maven.apache.org/plugins/maven-javadoc-plugin) | package | Generates project's javadoc artifact. |
 | [maven-gpg-plugin](https://maven.apache.org/plugins/maven-gpg-plugin) | package | Generates project's gpg artifacts. |
 | [nexus-staging-maven-plugin](https://github.com/sonatype/nexus-maven-plugins/tree/master/staging/maven-plugin) | deploy | Deploys generated artifacts to maven central. |
+| [coveralls-maven-plugin](https://github.com/trautonen/coveralls-maven-plugin) | site-deploy | Publishes jacoco coverage report to [coveralls](https://coveralls.io/). |
 | [github-site-plugin](https://github.com/github/maven-plugins/tree/master/github-site-plugin) | site-deploy | Deploys generated maven site to github gh-pages branch. |
