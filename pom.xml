@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.andreptb</groupId>
 	<artifactId>andreptb-component-parent</artifactId>
-	<version>0.2.1</version>
+	<version>0.3.0</version>
 	<packaging>pom</packaging>
 	<name>andreptb-component-parent</name>
 	<description>Parent POM designed to provide common configuration for Maven component projects available on Maven Central</description>
@@ -11,14 +11,14 @@
 
 	<properties>
 		<maven.repo>${env.M2_REPO}/repository</maven.repo>
-		<parent.pom.version>0.2.1</parent.pom.version>
+		<parent.pom.version>0.3.0</parent.pom.version>
 		<parent.pom.artifactId>andreptb-component-parent</parent.pom.artifactId>
 		<sourceConfigDirectory>${basedir}/src/config</sourceConfigDirectory>
 		<configDependencyBasePath>${maven.repo}/com/github/andreptb/${parent.pom.artifactId}/${parent.pom.version}/${parent.pom.artifactId}-${parent.pom.version}</configDependencyBasePath>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<jacoco.version>0.7.5.201505241946</jacoco.version>
 	</properties>
 
