@@ -9,8 +9,9 @@
 		</server>
 		<server>
 			<id>github</id>
+			<username>${env.GH_USER}</username>
 			<password>${env.GH_TOKEN}</password>
-			</server>
+		</server>
 	</servers>
 	<profiles>
 		<profile>
